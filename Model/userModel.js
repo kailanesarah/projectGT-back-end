@@ -1,6 +1,8 @@
 const { DataTypes } = require("sequelize");
 const connection = require("../DataBase/connection");
 
+//Model categoria é uma referencia do banco de dados
+
 const User = connection.define(
   "User",
   {

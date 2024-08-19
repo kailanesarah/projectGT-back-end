@@ -1,6 +1,8 @@
-const {DataTypes } = require("sequelize");
+const { DataTypes } = require("sequelize");
 const connection = require("../DataBase/connection");
 const Category = require("./categoryModel");
+
+//Model categoria é uma referencia do banco de dados
 
 const Product = connection.define(
   "TB_PRODUCTS",
@@ -18,7 +20,7 @@ const Product = connection.define(
       type: DataTypes.FLOAT,
       allowNull: false,
     },
-    PRO_DESCIPTION: {
+    PRO_DESCRIPTION: {
       type: DataTypes.STRING(100),
       allowNull: false,
     },
@@ -27,11 +29,11 @@ const Product = connection.define(
       allowNull: false,
       references: {
         model: Category, // Nome do modelo da categoria
-        key: 'CAT_ID', // Chave estrangeira na tabela Category
+        key: "CAT_ID", // Chave estrangeira na tabela Category
       },
     },
   },
-  { tableName: "TB_PRODUCTS" }
+  { tableName: "TB_PRODUCTS", timestamps: false }
 );
 
 module.exports = Product;

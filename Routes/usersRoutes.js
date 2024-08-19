@@ -1,15 +1,14 @@
-const express = require("express")
-const router = express.Router()
+const express = require("express");
+const router = express.Router();
 
 // Controller
 const UsersController = require("../Controllers/userController");
 const User = new UsersController();
-const authGuard = require("../Middlewares/authGuard")
+const authGuard = require("../Middlewares/authGuard");
 
-// Routes
-router.post("/login", User.login)
-router.post("/register", (User.add));
-
+// Routes para crud de usuários
+router.post("/login", User.login);
+router.post("/register", User.add);
 router.get("/", User.findAll);
 router.get("/:id", User.findById);
 router.delete("/:id", authGuard, User.delete);

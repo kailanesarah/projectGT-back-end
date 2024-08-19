@@ -1,33 +1,33 @@
-const User = require("../Model/userModel")
-const jwt = require("jsonwebtoken")
+const User = require("../Model/userModel");
+const jwt = require("jsonwebtoken");
 
 const jwtSecret = process.env.APP_KEY_SECRET;
 
+//Lógica dos cruds
 
 class UsersController {
 
+  #listar
   async findAll(req, res) {
     try {
-      const user = await User.findAll()
+      const user = await User.findAll();
 
       if (!user) {
         return res.status(404).json({ error: "Usuários não encontrados" });
       }
 
       res.status(200).json(user);
-
     } catch (error) {
-      res
-        .status(500)
-        .json({ message: "Erro ao listar usuários" });
+      res.status(500).json({ message: "Erro ao listar usuários" });
     }
   }
 
+  #listarid
   async findById(req, res) {
     try {
       const { id: USER_ID } = req.params;
       const user = await User.findByPk(USER_ID, {
-        attributes: { exclude: ['USER_SENHA'] }
+        attributes: { exclude: ["USER_SENHA"] },
       });
 
       if (!user) {
@@ -42,6 +42,7 @@ class UsersController {
     }
   }
 
+  #deletar
   async delete(req, res) {
     try {
       const { id: USER_ID } = req.params;
@@ -49,7 +50,6 @@ class UsersController {
       const resultado = await User.destroy({ where: { USER_ID } });
 
       res.json({ message: "Usuário deletado com sucesso" });
-
     } catch (error) {
       res.status(500).json({
         message: "CONTROLLER: Erro ao deletar usuário: " + error.message,
@@ -57,20 +57,28 @@ class UsersController {
     }
   }
 
+  #atuzalizar
   async update(req, res) {
     try {
-      const { name: USER_NOME, age: USER_IDADE, email: USER_EMAIL, password: USER_SENHA } = req.body;
+      const {
+        name: USER_NOME,
+        age: USER_IDADE,
+        email: USER_EMAIL,
+        password: USER_SENHA,
+      } = req.body;
       const { id: USER_ID } = req.params;
 
       if (!USER_NOME || !USER_IDADE || !USER_EMAIL) {
-        return res.status(400).json({ errors: "Todos os campos são necessários" });
+        return res
+          .status(400)
+          .json({ errors: "Todos os campos são necessários" });
       }
 
       const updatedData = {
         USER_NOME,
         USER_IDADE,
         USER_EMAIL,
-        USER_SENHA
+        USER_SENHA,
       };
 
       const [updated] = await User.update(updatedData, { where: { USER_ID } });
@@ -84,13 +92,11 @@ class UsersController {
       } else {
         return res.status(404).json({ message: "Informações desatualizadas" });
       }
-
     } catch (error) {
       console.error("Error updating user:", error);
       return res.status(500).json({ message: "Erro ao atualizar usuário" });
     }
   }
-
 
   async login(req, res) {
     const { email: USER_EMAIL, password } = req.body;
@@ -139,16 +145,15 @@ class UsersController {
         USER_SENHA: password,
       });
 
-
-
       res.status(201).json({
         _id: newUser.USER_ID,
         token: await generateToken(newUser.USER_ID),
       });
-
     } catch (error) {
       console.error("Erro ao registrar o usuário:", error);
-      res.status(500).json({ errors: ["Erro no servidor, tente novamente mais tarde."] });
+      res
+        .status(500)
+        .json({ errors: ["Erro no servidor, tente novamente mais tarde."] });
     }
   }
 }
