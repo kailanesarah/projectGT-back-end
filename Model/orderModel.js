@@ -30,7 +30,8 @@ const Order = connection.define('TB_ORDER', {
       }
     }
   }, {
-    tableName: 'TB_ORDER' 
+    tableName: 'TB_ORDER',
+    timestamps: false,
   });
   
   module.exports = Order;

@@ -18,7 +18,7 @@ const Product = connection.define(
       type: DataTypes.FLOAT,
       allowNull: false,
     },
-    PRO_DESCIPTION: {
+    PRO_DESCRIPTION: {
       type: DataTypes.STRING(100),
       allowNull: false,
     },
@@ -31,7 +31,9 @@ const Product = connection.define(
       },
     },
   },
-  { tableName: "TB_PRODUCTS" }
+  { tableName: "TB_PRODUCTS",
+    timestamps: false,
+   }
 );
 
 module.exports = Product;
